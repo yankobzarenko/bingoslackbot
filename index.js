@@ -18,7 +18,8 @@ app.command("/bingo-help", async ({ ack, respond }) => {
 /bingo-ping - Check Bingo's latency
 /bingo-catfact - Ask Bingo for a random cat fact
 /bingo-forecast - Ask Bingo about the weather
-/bingo-colorpallete - Ask Bingo for a color pallete`
+/bingo-colorpallete - Ask Bingo for a color pallete
+/bingo-joke - Ask Bingo for a random joke`
   });
 });
 
@@ -134,6 +135,23 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
     await respond({ text: "Sorry, I couldn't fetch a color palette at the moment." });
   }
 });
+
+app.command("/bingo-joke", async ({ ack, respond }) => {
+  await ack();
+
+  try {
+    const response = await axios.get("https://official-joke-api.appspot.com/random_joke");
+    await respond({
+      text:
+`${response.data.setup}
+
+${response.data.punchline}`
+    });
+  } catch (err) {
+    await respond({ text: "Sorry, I couldn't fetch a joke at the moment." });
+  }
+});
+
 
 (async () => {
   await app.start();

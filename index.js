@@ -1,3 +1,4 @@
+const zipcodes = require("zipcodes");
 const axios = require("axios");
 require("dotenv").config();
 
@@ -13,9 +14,11 @@ app.command("/bingo-help", async ({ ack, respond }) => {
   await ack();
   await respond({
     text:
-`Available Commands:
-/bingo-ping - Check bot latency
-/bingo-catfact - Get a cat fact`
+`Here's what you can ask me to do:
+/bingo-ping - Check Bingo's latency
+/bingo-catfact - Ask Bingo for a random cat fact
+/bingo-forecast - Ask Bingo about the weather
+/bingo-colorpallete - Ask Bingo for a color pallete`
   });
 });
 
@@ -31,13 +34,108 @@ app.command("/bingo-catfact", async ({ ack, respond }) => {
 
   try {
     const response = await axios.get("https://catfact.ninja/fact");
-    await respond({ text: `Cat Fact:\n${response.data.fact}` });
+    await respond({ text: `Here's something I found:\n${response.data.fact}` });
   } catch (err) {
-    await respond({ text: "Failed to fetch a cat fact." });
+    await respond({ text: "Sorry, I couldn't fetch a cat fact at the moment." });
+  }
+});
+
+app.command("/bingo-forecast", async ({ ack, respond, body }) => {
+  await ack();
+
+  try {
+    const zipcode = (body.text || "").trim();
+
+    if (!zipcode) {
+      await respond({ text: "I'm sorry, but I need a zipcode to provide a weather forecast." });
+      return;
+    }
+
+    const location = zipcodes.lookup(zipcode);
+
+    if (!location) {
+      await respond({ text: "Uh oh! I couldn't find that zipcode." });
+      return;
+    }
+
+    const lat = location.latitude;
+    const lon = location.longitude;
+
+    const response = await axios.get("https://api.open-meteo.com/v1/forecast", {
+      params: {
+        latitude: lat,
+        longitude: lon,
+        hourly: "temperature_2m,weathercode",
+        timezone: "auto"
+      }
+    });
+
+    const weathercode = {
+      0: "Clear sky",
+      1: "Mainly clear",
+      2: "Partly cloudy",
+      3: "Overcast",
+      45: "Fog",
+      48: "Depositing rime fog",
+      51: "Light drizzle",
+      53: "Moderate drizzle",
+      55: "Dense drizzle",
+      56: "Light freezing drizzle",
+      57: "Dense freezing drizzle",
+      61: "Slight rain",
+      63: "Moderate rain",
+      65: "Heavy rain",
+      66: "Light freezing rain",
+      67: "Heavy freezing rain",
+      71: "Slight snow fall",
+      73: "Moderate snow fall",
+      75: "Heavy snow fall",
+      77: "Snow grains",
+      80: "Slight rain showers",
+      81: "Moderate rain showers",
+      82: "Violent rain showers",
+      85: "Slight snow showers",
+      86: "Heavy snow showers",
+      95: "Thunderstorm",
+      96: "Thunderstorm with slight hail",
+      99: "Thunderstorm with heavy hail"
+    };
+
+    const code = response.data.hourly.weathercode[0];
+    const weather = weathercode[code] ?? "Unknown weather condition";
+
+    await respond({
+      text: `In ${location.city}, ${location.state}, today's weather is as follows:\nTemperature: ${response.data.hourly.temperature_2m[0]}°C\nWeather: ${weather}`
+    });
+
+  } catch (err) {
+    await respond({ text: `Sorry, I couldn't fetch the weather forecast at the moment.` });
+  }
+});
+
+app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
+  await ack();
+
+  const search = (body.text || "").trim();
+
+  try {
+    const response = await axios.get(`https://colormagic.app/api/palette/search?q=${search}`);
+    const palletes = response.data;
+
+    const formatted = palletes.map((palette) => {
+      const colors = palette.colors.join("  ");
+      const tags = palette.tags.join(", ");
+      return `*${palette.text}*\nTags: ${tags}\nColors: ${colors}`;
+    }).join("\n\n");
+
+
+    await respond({ text: formatted });
+  } catch (err) {
+    await respond({ text: "Sorry, I couldn't fetch a color palette at the moment." });
   }
 });
 
 (async () => {
   await app.start();
-  console.log("bot is running!");
+  console.log("Ready to help!");
 })();

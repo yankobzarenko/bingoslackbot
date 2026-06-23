@@ -13,6 +13,7 @@
   "dependencies": {
     "@slack/bolt": "^4.7.3",
     "axios": "^1.18.1",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "zipcodes": "^8.0.0"
   }
 }

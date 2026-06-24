@@ -181,8 +181,8 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
         options: {
           legend: { display: false },
           scales: {
-            x: [{ display: false }],
-            y: [{ display: false }]
+            xAxes: [{ display: false }],
+            yAxes: [{ display: false }]
           }
         }
       };

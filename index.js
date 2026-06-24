@@ -165,7 +165,7 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
       });
 
       const colorBlocks = palette.colors
-        .map(hex => `'${hex}' ${hex}`)
+        .map((hex) => `'${hex}' ${hex}`)
         .join("  ");
 
       blocks.push({

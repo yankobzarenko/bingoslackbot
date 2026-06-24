@@ -189,7 +189,7 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
 
     await respond({ blocks });
   } catch (err) {
-    await respond({ text: "Sorry, I couldn't fetch a color palette at the moment." });
+    await respond({ text: `Sorry, I couldn't fetch a color palette at the moment. Error: ${err.message}` });
   }
 });
 

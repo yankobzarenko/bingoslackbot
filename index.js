@@ -170,7 +170,7 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
       });
 
       const colorBlocks = palette.colors
-        .map((hex) => `\`${hex}\` ${hex}`)
+        .map((hex) => `\`${hex}\``)
         .join("  ");
 
       blocks.push({
@@ -190,6 +190,24 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
           }
         ]
       });
+
+      const chart = {
+        type: "bar",
+        data: {
+          labels: palette.colors,
+          datasets: [{
+            data: palette.colors.map(() => 1),
+            backgroundColor: palette.colors
+          }]
+        },
+        options: {
+          legend: { display: false },
+          scales: {
+            x: { display: false },
+            y: { display: false }
+          }
+        }
+      }
     });
 
     await respond({ blocks });

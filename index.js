@@ -136,6 +136,11 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
 
   const search = (body.text || "").trim();
 
+  if (!search) {
+    await respond({ text: "Please provide a search term to find color palettes." });
+    return;
+  }
+
   try {
     const response = await axios.get(`https://colormagic.app/api/palette/search?q=${search}`);
     const palletes = response.data;

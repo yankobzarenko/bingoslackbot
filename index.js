@@ -165,15 +165,23 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
       });
 
       const colorBlocks = palette.colors
-        .map((hex) => `'${hex}' ${hex}`)
+        .map((hex) => `\`${hex}\` ${hex}`)
         .join("  ");
+
+      blocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: colorBlocks
+        }
+      });
 
       blocks.push({
         type: "context",
         elements: [
           {
             type: "mrkdwn",
-            text: '${palette.tags.join(", ")}'
+            text: `${palette.tags.join(", ")}`
           }
         ]
       });

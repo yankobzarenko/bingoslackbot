@@ -185,16 +185,15 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
             y: [{ display: false }]
           }
         }
-      }
-    });
+      };
 
-    const imageUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=400&height=80`;
+      const imageUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=400&height=80`;
 
-    blocks.push({
-      type: "image",
-      image_url: imageUrl,
-      alt_text: "Color Palette Chart"
-    });
+      blocks.push({
+        type: "image",
+        image_url: imageUrl,
+        alt_text: "Color Palette Chart"
+      });
 
       const colorBlocks = palette.colors
         .map((hex) => `${hex}`)
@@ -217,6 +216,7 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
           }
         ]
       });
+    });
 
     await respond({ blocks });
   } catch (err) {

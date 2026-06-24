@@ -143,7 +143,7 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
 
   try {
     const response = await axios.get(`https://colormagic.app/api/palette/search?q=${search}`);
-    const palletes = response.data;
+    const palletes = response.data.slice(0, 5); // Limit to 5 palettes
 
     const blocks = [];
 

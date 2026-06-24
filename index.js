@@ -140,14 +140,46 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
     const response = await axios.get(`https://colormagic.app/api/palette/search?q=${search}`);
     const palletes = response.data;
 
-    const formatted = palletes.map((palette) => {
-      const colors = palette.colors.join("  ");
-      const tags = palette.tags.join(", ");
-      return `*${palette.text}*\nTags: ${tags}\nColors: ${colors}`;
-    }).join("\n\n");
+    const blocks = [];
 
+    blocks.push({
+      type: "header",
+      text: {
+        type: "plain_text",
+        text: `Color Palettes for "${search}"`,
+        emoji: true
+      }
+    });
 
-    await respond({ text: formatted });
+    palletes.forEach((palette, i) => {
+      if (i > 0) {
+        blocks.push({ type: "divider" });
+      }
+
+      blocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*${palette.text}*`
+        }
+      });
+
+      const colorBlocks = palette.colors
+        .map(hex => `'${hex}' ${hex}`)
+        .join("  ");
+
+      blocks.push({
+        type: "context",
+        elements: [
+          {
+            type: "mrkdwn",
+            text: '${palette.tags.join(", ")}'
+          }
+        ]
+      });
+    });
+
+    await respond({ blocks });
   } catch (err) {
     await respond({ text: "Sorry, I couldn't fetch a color palette at the moment." });
   }

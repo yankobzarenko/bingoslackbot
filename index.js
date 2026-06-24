@@ -170,7 +170,7 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
       });
 
       const colorBlocks = palette.colors
-        .map((hex) => `\`${hex}\``)
+        .map((hex) => `${hex}`)
         .join("  ");
 
       blocks.push({
@@ -208,6 +208,14 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
           }
         }
       }
+    });
+
+    const chartUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=500&height=100`;
+
+    blocks.push({
+      type: "image",
+      image_url: chartUrl,
+      alt_text: "Color Palette Chart"
     });
 
     await respond({ blocks });

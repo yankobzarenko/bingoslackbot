@@ -169,6 +169,33 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
         }
       });
 
+      const chart = {
+        type: "bar",
+        data: {
+          labels: palette.colors,
+          datasets: [{
+            data: palette.colors.map(() => 1),
+            backgroundColor: palette.colors
+          }]
+        },
+        options: {
+          legend: { display: false },
+          scales: {
+            x: [{ display: false }],
+            y: [{ display: false }]
+          }
+        }
+      }
+    });
+
+    const imageUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=400&height=80`;
+
+    blocks.push({
+      type: "image",
+      image_url: imageUrl,
+      alt_text: "Color Palette Chart"
+    });
+
       const colorBlocks = palette.colors
         .map((hex) => `${hex}`)
         .join("  ");
@@ -190,33 +217,6 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
           }
         ]
       });
-
-      const chart = {
-        type: "bar",
-        data: {
-          labels: palette.colors,
-          datasets: [{
-            data: palette.colors.map(() => 1),
-            backgroundColor: palette.colors
-          }]
-        },
-        options: {
-          legend: { display: false },
-          scales: {
-            x: { display: false },
-            y: { display: false }
-          }
-        }
-      }
-    });
-
-    const chartUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=500&height=100`;
-
-    blocks.push({
-      type: "image",
-      image_url: chartUrl,
-      alt_text: "Color Palette Chart"
-    });
 
     await respond({ blocks });
   } catch (err) {

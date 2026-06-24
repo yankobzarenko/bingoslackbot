@@ -158,7 +158,6 @@ app.command("/bingo-timezone", async ({ ack, respond, body }) => {
 
   try {
     const currenttime = new Date();
-    const usertimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const targettimezone = (body.text || "").trim();
 
     if (!targettimezone) {
@@ -170,6 +169,10 @@ app.command("/bingo-timezone", async ({ ack, respond, body }) => {
       timeZone: targettimezone,
       dateStyle: "full",
       timeStyle: "long"
+    });
+
+    await respond({
+      text: `The current time in ${targettimezone} is:\n${conversion}`
     });
 
   } catch (err) {

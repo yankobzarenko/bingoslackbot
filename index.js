@@ -19,7 +19,8 @@ app.command("/bingo-help", async ({ ack, respond }) => {
 /bingo-catfact - Ask Bingo for a random cat fact
 /bingo-forecast - Ask Bingo about the weather
 /bingo-colorpallete - Ask Bingo for a color pallete
-/bingo-joke - Ask Bingo for a random joke`
+/bingo-joke - Ask Bingo for a random joke
+/bingo-timezone - Ask Bingo to convert timezones for you`
   });
 });
 
@@ -38,6 +39,22 @@ app.command("/bingo-catfact", async ({ ack, respond }) => {
     await respond({ text: `Here's something I found:\n${response.data.fact}` });
   } catch (err) {
     await respond({ text: "Sorry, I couldn't fetch a cat fact at the moment." });
+  }
+});
+
+app.command("/bingo-joke", async ({ ack, respond }) => {
+  await ack();
+
+  try {
+    const response = await axios.get("https://official-joke-api.appspot.com/random_joke");
+    await respond({
+      text:
+`${response.data.setup}
+
+${response.data.punchline}`
+    });
+  } catch (err) {
+    await respond({ text: "Sorry, I couldn't fetch a joke at the moment." });
   }
 });
 
@@ -136,22 +153,29 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
   }
 });
 
-app.command("/bingo-joke", async ({ ack, respond }) => {
+app.command("/bingo-timezone", async ({ ack, respond, body }) => {
   await ack();
 
   try {
-    const response = await axios.get("https://official-joke-api.appspot.com/random_joke");
-    await respond({
-      text:
-`${response.data.setup}
+    const currenttime = new Date();
+    const usertimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const targettimezone = (body.text || "").trim();
 
-${response.data.punchline}`
+    if (!targettimezone) {
+      await respond({ text: "Please provide a timezone to convert the current time." });
+      return;
+    }
+
+    const conversion = currenttime.toLocaleString("en-US", { 
+      timeZone: targettimezone,
+      dateStyle: "full",
+      timeStyle: "long"
     });
+
   } catch (err) {
-    await respond({ text: "Sorry, I couldn't fetch a joke at the moment." });
+    await respond({ text: "Sorry, I couldn't convert the timezone at the moment." });
   }
 });
-
 
 (async () => {
   await app.start();

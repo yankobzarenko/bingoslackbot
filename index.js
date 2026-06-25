@@ -18,7 +18,7 @@ app.command("/bingo-help", async ({ ack, respond }) => {
 /bingo-ping - Check Bingo's latency
 /bingo-catfact - Ask Bingo for a random cat fact
 /bingo-forecast - Ask Bingo about the weather
-/bingo-colorpallete - Ask Bingo for a color pallete
+/bingo-colorpalette - Ask Bingo for a color palette
 /bingo-joke - Ask Bingo for a random joke
 /bingo-timezone - Ask Bingo to convert timezones for you`
   });
@@ -131,7 +131,7 @@ app.command("/bingo-forecast", async ({ ack, respond, body }) => {
   }
 });
 
-app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
+app.command("/bingo-colorpalette", async ({ ack, respond, body }) => {
   await ack();
 
   const search = (body.text || "").trim();

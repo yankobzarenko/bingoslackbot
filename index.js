@@ -184,12 +184,18 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
           legend: { display: false },
           scales: {
             xAxes: [{ display: false }],
-            yAxes: [{ display: false }]
+            yAxes: [{
+              display: false,
+              ticks: {
+                min: 0,
+                max: 1
+              }
+            }]
           }
         }
       };
 
-      const imageUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=400&height=40`;
+      const imageUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=400&height=80`;
 
       blocks.push({
         type: "image",

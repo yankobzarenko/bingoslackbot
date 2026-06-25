@@ -311,7 +311,7 @@ app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
     const customurl = args.length > 1 ? args[1] : undefined;
 
     try {
-      const response = await axios.get('https://csclub.uwaterloo.ca/~phthakka/1pt-express', {
+      const response = await axios.get('https://csclub.uwaterloo.ca/~phthakka/1pt-express/addURL', {
         params: {
           long: url,
           short: customurl

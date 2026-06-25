@@ -20,7 +20,8 @@ app.command("/bingo-help", async ({ ack, respond }) => {
 /bingo-forecast - Ask Bingo about the weather
 /bingo-colorpalette - Ask Bingo for a color palette
 /bingo-joke - Ask Bingo for a random joke
-/bingo-timezone - Ask Bingo to convert timezones for you`
+/bingo-timezone - Ask Bingo to convert timezones for you
+/bingo-qrcode - Ask Bingo to generate a QR code with a URL of your choosing`
   });
 });
 
@@ -258,6 +259,33 @@ app.command("/bingo-timezone", async ({ ack, respond, body }) => {
     await respond({ text: "Sorry, I couldn't convert the timezone at the moment." });
   }
 });
+
+app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
+  await ack();
+
+  const url = (body.text || "").trim();
+
+  if (!url) {
+    await respond({ text: "Please provide a URL to generate a QR code." });
+    return;
+  }
+
+  try {
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
+
+    await respond({
+      text: "Here is your QR code:",
+      attachments: [
+        {
+          image_url: qrCodeUrl,
+          alt_text: `${url}`
+        }
+      ]
+    });
+  } catch (err) {
+    await respond({ text: "Sorry, I couldn't generate the QR code at the moment." });
+    }
+  });
 
 (async () => {
   await app.start();

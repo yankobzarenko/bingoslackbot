@@ -275,8 +275,9 @@ app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
 
     await respond({
       text: "Here is your QR code:",
-      attachments: [
+      blocks: [
         {
+          type: "image",
           image_url: qrCodeUrl,
           alt_text: `${url}`
         }

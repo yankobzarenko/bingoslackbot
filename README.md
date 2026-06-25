@@ -2,7 +2,7 @@
 
 Bingo! is a simple Slack Bot with a couple of useful commands.
 
-Currently, there are six commands:
+Currently, there are these commands:
 
 - /bingo-help: lists all currently available commands
 

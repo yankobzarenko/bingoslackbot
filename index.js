@@ -279,7 +279,7 @@ app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
       type: "header",
       text: {
         type: "plain_text",
-        text: `Here is your QR Code for "${url}:"`,
+        text: `Here is your QR Code for ${url}:`,
       }
     });
 

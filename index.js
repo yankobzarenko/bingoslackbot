@@ -189,7 +189,7 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
         }
       };
 
-      const imageUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=400&height=80`;
+      const imageUrl = `https://quickchart.io/chart?c=${encodeURIComponent(JSON.stringify(chart))}&width=400&height=40`;
 
       blocks.push({
         type: "image",

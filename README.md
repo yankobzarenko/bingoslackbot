@@ -15,3 +15,5 @@ Currently, there are six commands:
 - /bingo-forecast: fetches the current weather in a specific location given a U.S. zip code
 
 - /bingo-colorpallete: fetches color palletes based on the word you give to Bingo!
+
+- /bingo-timezone: converts your current timezone to another timezone of your choosing (ex: Europe/Zurich)

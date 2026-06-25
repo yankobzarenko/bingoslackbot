@@ -17,3 +17,5 @@ Currently, there are these commands:
 - /bingo-colorpalette: fetches color palettes based on the word you give to Bingo!
 
 - /bingo-timezone: converts your current timezone to another timezone of your choosing (ex: Europe/Zurich)
+
+- /bingo-qrcode: generates a QR code based on the url

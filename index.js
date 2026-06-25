@@ -21,8 +21,7 @@ app.command("/bingo-help", async ({ ack, respond }) => {
 /bingo-colorpalette - Ask Bingo for a color palette
 /bingo-joke - Ask Bingo for a random joke
 /bingo-timezone - Ask Bingo to convert timezones for you
-/bingo-qrcode - Ask Bingo to generate a QR code with a URL of your choosing
-/bingo-urlshortener - Ask Bingo to shorten a URL for you`
+/bingo-qrcode - Ask Bingo to generate a QR code with a URL of your choosing`
   });
 });
 
@@ -296,34 +295,6 @@ app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
     }
   });
   
-  app.command("/bingo-urlshortener", async ({ ack, respond, body }) => {
-    await ack();
-
-    const text = (body.text || '').trim();
-
-    if (!text) {
-      await respond({ text: "Please provide a URL to shorten." });
-      return;
-    }
-
-    const args = text.split(' ', 2);
-    const url = args[0];
-    const customurl = args.length > 1 ? args[1] : undefined;
-
-    try {
-      const response = await axios.get('https://csclub.uwaterloo.ca/~phthakka/1pt-express/addURL', {
-        params: {
-          long: url,
-          short: customurl
-        }
-      });
-
-      await respond({ text: `Here is your shortened URL: ${response.data.shortenedUrl}` });
-    } catch (err) {
-      await respond({ text: `Sorry, I couldn't shorten the URL at the moment. Error: ${err.message}` });
-    }
-  });
-
 (async () => {
   await app.start();
   console.log("Ready to help!");

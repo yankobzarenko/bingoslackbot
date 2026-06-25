@@ -273,16 +273,23 @@ app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
   try {
     const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
 
-    await respond({
-      text: "Here is your QR code:",
-      blocks: [
-        {
-          type: "image",
-          image_url: qrCodeUrl,
-          alt_text: `${url}`
+    const blocks = []
+
+    blocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*Here is your QR Code for ${url}:*`
         }
-      ]
     });
+
+    blocks.push({
+        type: "image",
+        image_url: qrCodeUrl,
+        alt_text: `${url}`
+    });
+    
+    await respond({ blocks });
   } catch (err) {
     await respond({ text: "Sorry, I couldn't generate the QR code at the moment." });
     }

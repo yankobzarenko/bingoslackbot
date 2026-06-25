@@ -300,24 +300,18 @@ app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
     await ack();
 
     const text = (body.text || '').trim();
-    const args = text.split(' ', 2);
-
-    if (args.length = 1) {
-      const url = args[0];
-    }
-
-    if (args.length > 1) {
-      const url = args[0];
-      const customurl = args[1];
-    }
 
     if (!text) {
       await respond({ text: "Please provide a URL to shorten." });
       return;
     }
 
+    const args = text.split(' ', 2);
+    const url = args[0];
+    const customurl = args.length > 1 ? args[1] : undefined;
+
     try {
-      const response = await axios.get('csclub.uwaterloo.ca/~phthakka/1pt-express', {
+      const response = await axios.get('https://csclub.uwaterloo.ca/~phthakka/1pt-express', {
         params: {
           long: url,
           short: customurl

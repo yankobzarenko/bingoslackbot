@@ -276,7 +276,7 @@ app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
     const blocks = []
 
     blocks.push({
-      type: "header",
+      type: "section",
       text: {
         type: "plain_text",
         text: `Here is your QR Code for ${url}:`,

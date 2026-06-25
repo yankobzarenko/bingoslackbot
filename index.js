@@ -175,7 +175,9 @@ app.command("/bingo-colorpallete", async ({ ack, respond, body }) => {
           labels: palette.colors,
           datasets: [{
             data: palette.colors.map(() => 1),
-            backgroundColor: palette.colors
+            backgroundColor: palette.colors,
+            barPercentage: 1.0,
+            categoryPercentage: 1.0
           }]
         },
         options: {

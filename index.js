@@ -320,7 +320,7 @@ app.command("/bingo-qrcode", async ({ ack, respond, body }) => {
 
       await respond({ text: `Here is your shortened URL: ${response.data.shortenedUrl}` });
     } catch (err) {
-      await respond({ text: "Sorry, I couldn't shorten the URL at the moment." });
+      await respond({ text: `Sorry, I couldn't shorten the URL at the moment. Error: ${err.message}` });
     }
   });
 
